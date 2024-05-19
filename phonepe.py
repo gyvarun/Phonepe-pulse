@@ -175,34 +175,34 @@ connect.close()
 engine = create_engine('mysql+mysqlconnector://root:root@localhost/phonepe_db', echo=False)
 
 #Data migration to SQL
-Agg_Trans.to_sql('agg_trans', engine, if_exists='append', index=False,
+Agg_Trans.to_sql('agg_trans', engine, if_exists='replace', index=False,
                  dtype={"State": sqlalchemy.types.VARCHAR(length=225),
-                                "Year": sqlalchemy.types.VARCHAR(length=225),
+                                "Year": sqlalchemy.types.INT,
                                 "Quarter": sqlalchemy.types.INT,
                                 "Transaction_type": sqlalchemy.types.VARCHAR(length=225),
                                 "Transaction_count": sqlalchemy.types.BigInteger,
                                 "Transaction_amount": sqlalchemy.types.BigInteger,})
 
-Agg_User.to_sql('agg_user', engine, if_exists='append', index=False,
+Agg_User.to_sql('agg_user', engine, if_exists='replace', index=False,
                  dtype={"State": sqlalchemy.types.VARCHAR(length=225),
-                                "Year": sqlalchemy.types.VARCHAR(length=225),
+                                "Year": sqlalchemy.types.INT,
                                 "Quarter": sqlalchemy.types.INT,
                                 "Users": sqlalchemy.types.BigInteger,
                                 "App_opens": sqlalchemy.types.BigInteger,})
 
 
-Top_Trans_dis.to_sql('top_trans_dis', engine, if_exists='append', index=False,
+Top_Trans_dis.to_sql('top_trans_dis', engine, if_exists='replace', index=False,
                  dtype={"State": sqlalchemy.types.VARCHAR(length=225),
-                                "Year": sqlalchemy.types.VARCHAR(length=225),
+                                "Year": sqlalchemy.types.INT,
                                 "Quarter": sqlalchemy.types.INT,
                                 "District": sqlalchemy.types.VARCHAR(length=225),
                                 "Transaction_count": sqlalchemy.types.BigInteger,
                                 "Transaction_amount": sqlalchemy.types.BigInteger,})
 
 
-Top_user_dis.to_sql('top_user_dis', engine, if_exists='append', index=False,
+Top_user_dis.to_sql('top_user_dis', engine, if_exists='replace', index=False,
                  dtype={"State": sqlalchemy.types.VARCHAR(length=225),
-                                "Year": sqlalchemy.types.VARCHAR(length=225),
+                                "Year": sqlalchemy.types.INT,
                                 "Quarter": sqlalchemy.types.INT,
                                 "District": sqlalchemy.types.VARCHAR(length=225),
                                 "Users": sqlalchemy.types.BigInteger,})
@@ -219,11 +219,13 @@ with st.sidebar:
     
 with st.sidebar:
     radio_1 = (st.selectbox("Choose Category",("Select here","Transactions", "Users" )))
+
     
 #SQL connection
 
 connect_for_data = pymysql.connect(host='localhost', user='root', password='root', db='phonepe_db')
 cursor = connect_for_data.cursor()
+
 
 # --------State vs Transactions---------
 
@@ -1276,6 +1278,8 @@ if year=='2023' and radio =='Top States' and radio_1 == 'Users':
     st.plotly_chart(fig60,use_container_width=True)
     st.dataframe(df60)
 
+
+connect_for_data.commit()
 # SQL DB connection close
 connect_for_data.close()
 
