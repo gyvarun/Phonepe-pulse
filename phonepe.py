@@ -1327,7 +1327,7 @@ with tab2:
         '3. Which state is having highest Recharge & bill payments?',
         '4. Which state is having highest Peer-to-peer payments?',
         '5. Which state is having highest Merchant payments?',
-        '6. Which state is using PhonePe for Financial services?'), key = 'collection_question')
+        '6. Which state is using PhonePe for Financial services?')
     
     connect_for_question = pymysql.connect(host='localhost', user='root', password='root', db='phonepe_db')
     cursor = connect_for_question.cursor()
